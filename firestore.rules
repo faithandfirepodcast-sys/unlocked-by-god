@@ -1,0 +1,37 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email == 'cmalaysia56@gmail.com';
+    }
+    function isAuth() {
+      return request.auth != null;
+    }
+
+    match /users/{uid} {
+      allow read, write: if isAdmin() || request.auth.uid == uid;
+      allow create: if isAuth();
+    }
+    match /prayerRequests/{id} {
+      allow create: if isAuth();
+      allow read, update, delete: if isAdmin();
+    }
+    match /assessments/{id} {
+      allow create: if isAuth();
+      allow read, update, delete: if isAdmin();
+    }
+    match /testimonies/{id} {
+      allow create: if isAuth();
+      allow read: if isAdmin() || resource.data.status == 'approved';
+      allow update, delete: if isAdmin();
+    }
+    match /devotionals/{id} {
+      allow read: if isAuth();
+      allow write: if isAdmin();
+    }
+    match /audioTeachings/{id} {
+      allow read: if isAuth();
+      allow write: if isAdmin();
+    }
+  }
+}
