@@ -12,7 +12,8 @@ import { auth, db } from "../firebase";
 
 const AuthContext = createContext(null);
 
-export const ADMIN_EMAIL = "cmalaysia56@gmail.com";
+export const ADMIN_EMAIL = "faithandfirepodcast@gmail.com";
+
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
